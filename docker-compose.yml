@@ -8,6 +8,7 @@ volumes:
 services:
   encfs:
     build: .
+    image: fphammerle/reverse-encfs
     volumes:
     - plain_data:/plain/data:ro
     - encfs_password:/secret
