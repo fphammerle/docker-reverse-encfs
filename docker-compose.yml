@@ -1,0 +1,20 @@
+version: '2'
+
+volumes:
+  plain_data:
+  encfs_password:
+  encfs_config:
+
+services:
+  encfs:
+    build: .
+    volumes:
+    - plain_data:/plain/data:ro
+    - encfs_password:/secret
+    - encfs_config:/encrypted/config
+    networks: []
+    devices: [/dev/fuse]
+    cap_add: [SYS_ADMIN]
+    security_opt: ['apparmor:unconfined']
+
+# https://docs.docker.com/compose/compose-file/compose-file-v2/
