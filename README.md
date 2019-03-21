@@ -9,3 +9,5 @@ docker run --rm -it \
 ```
 
 Optionally add `-v encfs-config:/encrypted/config` to make `encfs6.xml` persistent.
+
+Optionally add `--network none`
