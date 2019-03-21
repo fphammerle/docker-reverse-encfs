@@ -30,7 +30,7 @@ if [ ! -f "$ENCFS_CONFIG_PATH" ]; then
         echo waiting for encfs config
     done
     if [ -f "$ENCFS_DEFAULT_CONFIG_PATH" ]; then
-        umount "$ENCFS_MOUNT_POINT"
+        fusermount -u "$ENCFS_MOUNT_POINT"
         while mountpoint -q "$ENCFS_MOUNT_POINT"; do
             echo waiting for unmount
             sleep 1

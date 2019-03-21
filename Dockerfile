@@ -11,11 +11,17 @@ ENV ENCFS_PASSWORD_CHARSET="1-9a-km-zA-HJKLMNPR-Z*+!&#@%.\-_" \
     ENCFS_CONFIG_GENERATION_TIMEOUT_SECS=8
 
 COPY ./mount.sh /
-RUN mkdir -p \
+RUN adduser -S encrypt \
+    && mkdir -p \
         $(dirname $ENCFS_PASSWORD_PATH) \
         $ENCFS_SOURCE_DIR \
         $ENCFS_MOUNT_POINT \
         $(dirname $ENCFS_CONFIG_PATH) \
-    && chmod +x /mount.sh
-# TODO run as unprivileged user
+    && chown -c encrypt \
+        $(dirname $ENCFS_PASSWORD_PATH) \
+        $ENCFS_SOURCE_DIR `#.encfs6xml` \
+        $ENCFS_MOUNT_POINT \
+        $(dirname $ENCFS_CONFIG_PATH) \
+    && chmod a+rx /mount.sh
+USER encrypt
 CMD ["/mount.sh"]
