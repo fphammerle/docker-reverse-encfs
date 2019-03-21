@@ -17,4 +17,5 @@ RUN mkdir -p \
         $ENCFS_MOUNT_POINT \
         $(dirname $ENCFS_CONFIG_PATH) \
     && chmod +x /mount.sh
+# TODO run as unprivileged user
 CMD ["/mount.sh"]

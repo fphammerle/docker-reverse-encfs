@@ -43,4 +43,5 @@ if [ ! -f "$ENCFS_CONFIG_PATH" ]; then
 fi
 
 export ENCFS6_CONFIG="$ENCFS_CONFIG_PATH"
+# TODO grant access to other users / containers (--public / -o allow_other)
 mount_encfs -f
