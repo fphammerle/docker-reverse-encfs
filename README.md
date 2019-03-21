@@ -1,11 +1,10 @@
 ```sh
-# TODO remove --privileged
-# TODO remoge --userns
+# TODO remove --userns
 # TODO add image name
-docker run --rm -it \
+docker run --rm -it --device /dev/fuse \
     -v plain-data:/plain/data \
     -v encfs-password:/secret \
-    --device /dev/fuse --privileged --userns host ?
+    --cap-add SYS_ADMIN --security-opt apparmor:unconfined ?
 ```
 
 Optionally add `-v encfs-config:/encrypted/config` to make `encfs6.xml` persistent.
