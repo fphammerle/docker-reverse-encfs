@@ -15,3 +15,9 @@ Optionally add `-v encfs-config:/encrypted/config` to make `encfs6.xml` persiste
 Optionally add `--network none`
 
 Or simply run `docker-compose up`
+
+## Password
+
+The password will be randomly generated and stored in `/secret/password`.
+
+Set the env var `$ENCFS_PASSWORD_LENGTH` to change its length.
