@@ -22,6 +22,7 @@ RUN adduser -S encrypt \
         $ENCFS_SOURCE_DIR `#.encfs6xml` \
         $ENCFS_MOUNT_POINT \
         $(dirname $ENCFS_CONFIG_PATH) \
+    && echo user_allow_other >> /etc/fuse.conf \
     && chmod a+rx /mount.sh
 USER encrypt
 CMD ["/mount.sh"]
