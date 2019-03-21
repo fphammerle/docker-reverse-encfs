@@ -3,7 +3,7 @@
 # TODO remoge --userns
 # TODO add image name
 docker run --rm -it \
-    -v plain-data:/plain \
+    -v plain-data:/plain/data \
     -v encfs-password:/secret \
     --device /dev/fuse --privileged --userns host ?
 ```
