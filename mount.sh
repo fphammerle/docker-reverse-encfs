@@ -1,46 +1,31 @@
 #!/bin/sh
 set -e
 
+ENCFS_SOURCE_CONFIG_PATH="$ENCFS_SOURCE_DIR/.encfs6.xml"
+
 if [ ! -f "$ENCFS_PASSWORD_PATH" ]; then
-    echo generating encfs password
+    echo generating encfs password at $ENCFS_PASSWORD_PATH
     (set -x;
      tr -dc "$ENCFS_PASSWORD_CHARSET" < /dev/random | head -c "$ENCFS_PASSWORD_LENGTH" > "$ENCFS_PASSWORD_PATH")
-    [ -f "$ENCFS_CONFIG_PATH" ] && (set -x; rm "$ENCFS_CONFIG_PATH")
+    [ -f "$ENCFS_SOURCE_CONFIG_PATH" ] && (set -x; rm "$ENCFS_SOURCE_CONFIG_PATH")
 fi
 
-function mount_encfs {
-    (set -x
-     encfs --reverse "$@" \
-        --extpass="cat \"$ENCFS_PASSWORD_PATH\"" \
-        "$ENCFS_SOURCE_DIR" "$ENCFS_MOUNT_POINT")
+# cave: when $ENCFS6_CONFIG is set, encfs excepts the config to already exist
+# ERROR fatal: config file specified by environment does not exist: /target/config/encfs6.xml [FileUtils.cpp:246]
+# https://github.com/vgough/encfs/issues/497
+
+function copy_config {
+    sleep 4
+    while [ ! -f "$ENCFS_SOURCE_CONFIG_PATH" ]; do
+        echo waiting for encfs to create $ENCFS_SOURCE_CONFIG_PATH
+        sleep 2
+    done
+    (set -x; cp "$ENCFS_SOURCE_CONFIG_PATH" "$ENCFS_CONFIG_COPY_PATH")
 }
 
-if [ ! -f "$ENCFS_CONFIG_PATH" ]; then
-    # ERROR fatal: config file specified by environment does not exist: /target/config/encfs6.xml [FileUtils.cpp:246]
-    # https://github.com/vgough/encfs/issues/497
-    echo generating encfs config
-    ENCFS_DEFAULT_CONFIG_PATH="$ENCFS_SOURCE_DIR/.encfs6.xml"
-    if [ -f "$ENCFS_DEFAULT_CONFIG_PATH" ]; then
-        echo conflicting encfs config in $ENCFS_DEFAULT_CONFIG_PATH
-        exit 1
-    fi
-    mount_encfs --standard
-    while [ ! -f "$ENCFS_DEFAULT_CONFIG_PATH" ]; do
-        sleep 1
-        echo waiting for encfs config
-    done
-    if [ -f "$ENCFS_DEFAULT_CONFIG_PATH" ]; then
-        fusermount -u "$ENCFS_MOUNT_POINT"
-        while mountpoint -q "$ENCFS_MOUNT_POINT"; do
-            echo waiting for unmount
-            sleep 1
-        done
-        (set -x; mv "$ENCFS_DEFAULT_CONFIG_PATH" "$ENCFS_CONFIG_PATH")
-    else
-        echo failed to generate encfs config
-        exit 1
-    fi
-fi
-
-export ENCFS6_CONFIG="$ENCFS_CONFIG_PATH"
-mount_encfs -f -o allow_other
+copy_config &
+set -x
+mkdir -p "$ENCFS_MOUNT_POINT"
+encfs -f -o allow_other --reverse --standard \
+    --extpass="cat \"$ENCFS_PASSWORD_PATH\"" \
+    "$ENCFS_SOURCE_DIR" "$ENCFS_MOUNT_POINT"
