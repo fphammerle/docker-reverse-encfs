@@ -11,9 +11,20 @@ services:
     volumes:
     - plain_data:/plain/data:ro
     - encfs_password:/secret
+    # TODO replace host path with named volume
+    - /mnt/encrypted:/encrypted:shared
     networks: []
     devices: [/dev/fuse]
     cap_add: [SYS_ADMIN]
     security_opt: ['apparmor:unconfined']
+  rsync_sshd:
+    image: fphammerle/rsync-sshd:0.1-amd64
+    environment:
+      USERS: alice
+    volumes:
+    - /mnt/encrypted:/data:slave,ro
+    - ~/.ssh/authorized_keys:/home/alice/.ssh/authorized_keys:ro
+    ports: ['127.0.0.1:2022:22']
+    # rsync -av --rsh='ssh -p 2022' alice@localhost:/ encrypted
 
 # https://docs.docker.com/compose/compose-file/compose-file-v2/
