@@ -3,7 +3,7 @@
 Provides an EncFS-enciphered view `/encrypted` of volumes mounted in `/plain`
 
 ```sh
-docker run --rm -it --device /dev/fuse \
+docker run --rm --device /dev/fuse \
     -v plain-data1:/plain/foo:ro \
     -v plain-data2:/plain/bar:ro \
     -v encfs-password:/secret \
