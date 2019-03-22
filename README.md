@@ -23,7 +23,7 @@ Set the env var `$ENCFS_PASSWORD_LENGTH` to change its length.
 
 ## Access encrypted data
 
-Add `-v /somewhere:/encrypted:share` to mount the encrypted view of `/plain/*` into the host filesystem.
+Add `-v /somewhere:/encrypted:shared` to mount the encrypted view of `/plain/*` into the host filesystem.
 
 You may need to disable user namespace remapping for containers
 (dockerd option `--userns-remap`)
