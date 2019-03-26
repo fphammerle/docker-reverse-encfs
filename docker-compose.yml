@@ -12,6 +12,8 @@ services:
     - plain_data:/plain/data:ro
     - encfs_password:/secret
     # TODO replace host path with named volume
+    # [...] the local driver accepts mount options as a comma-separated list in the o parameter.
+    # https://docs.docker.com/storage/volumes/
     - /mnt/encrypted:/encrypted:shared
     networks: []
     devices: [/dev/fuse]
