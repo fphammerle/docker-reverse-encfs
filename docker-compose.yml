@@ -15,6 +15,9 @@ services:
     # TODO replace host path with named volume
     # [...] the local driver accepts mount options as a comma-separated list in the o parameter.
     # https://docs.docker.com/storage/volumes/
+    #
+    # update 2019-03-27: adding 'shared' to volumes.*.driver_opts.o did not suffice.
+    # got inspired by https://github.com/docker/compose/issues/2957#issuecomment-403175803
     - /mnt/encrypted:/encrypted:shared
     networks: []
     devices: [/dev/fuse]
