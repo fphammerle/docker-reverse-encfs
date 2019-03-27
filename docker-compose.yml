@@ -3,6 +3,7 @@ version: '2'
 volumes:
   plain_data:
   encfs_password:
+  sshd_host_keys:
 
 services:
   encfs:
@@ -25,6 +26,7 @@ services:
       USERS: alice
     volumes:
     - /mnt/encrypted:/data:slave,ro
+    - sshd_host_keys:/etc/ssh/host_keys
     - ~/.ssh/authorized_keys:/home/alice/.ssh/authorized_keys:ro
     ports: ['127.0.0.1:2022:22']
     # rsync -av --rsh='ssh -p 2022' alice@localhost:/ encrypted
