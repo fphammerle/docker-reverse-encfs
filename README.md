@@ -13,7 +13,10 @@ docker run --rm --device /dev/fuse \
 
 Optionally add `--network none`
 
-Or simply run `docker-compose up`
+## Docker Compose 🐙
+
+1. Adapt paths in [docker-compose.yml](docker-compose.yml)
+2. `docker-compose up`
 
 ## Password
 
@@ -28,3 +31,7 @@ Add `-v /somewhere:/encrypted:shared` to mount the encrypted view of `/plain/*` 
 You may need to disable user namespace remapping for containers
 (dockerd option `--userns-remap`)
 due to https://github.com/moby/moby/issues/36472 .
+
+## Serve encrypted data via rsync ssh server
+
+See [examples/rsync-sshd](examples/rsync-sshd/docker-compose.yml)

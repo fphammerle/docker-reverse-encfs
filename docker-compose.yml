@@ -3,7 +3,6 @@ version: '2'
 volumes:
   plain_data:
   encfs_password:
-  sshd_host_keys:
 
 services:
   encfs:
@@ -12,26 +11,10 @@ services:
     volumes:
     - plain_data:/plain/data:ro
     - encfs_password:/secret
-    # TODO replace host path with named volume
-    # [...] the local driver accepts mount options as a comma-separated list in the o parameter.
-    # https://docs.docker.com/storage/volumes/
-    #
-    # update 2019-03-27: adding 'shared' to volumes.*.driver_opts.o did not suffice.
-    # got inspired by https://github.com/docker/compose/issues/2957#issuecomment-403175803
     - /mnt/encrypted:/encrypted:shared
     networks: []
     devices: [/dev/fuse]
     cap_add: [SYS_ADMIN]
     security_opt: ['apparmor:unconfined']
-  rsync_sshd:
-    image: fphammerle/rsync-sshd:0.1-amd64
-    environment:
-      USERS: alice
-    volumes:
-    - /mnt/encrypted:/data:slave,ro
-    - sshd_host_keys:/etc/ssh/host_keys
-    - ~/.ssh/authorized_keys:/home/alice/.ssh/authorized_keys:ro
-    ports: ['127.0.0.1:2022:22']
-    # rsync -av --rsh='ssh -p 2022' alice@localhost:/ encrypted
 
 # https://docs.docker.com/compose/compose-file/compose-file-v2/
