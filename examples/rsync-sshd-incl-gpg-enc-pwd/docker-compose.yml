@@ -23,8 +23,7 @@ services:
       RECIPIENT: 1234567890ABCDEF1234567890ABCDEF12345678
     volumes:
     - encfs_password:/plain:ro
-    # TODO replace host path with named volume
-    - /mnt/password:/encrypted:shared
+    - /mnt/encrypted/encfs-password:/encrypted:shared
     devices: [/dev/fuse]
     cap_add: [SYS_ADMIN]
     security_opt: ['apparmor:unconfined']
@@ -35,7 +34,6 @@ services:
       USERS: alice
     volumes:
     - /mnt/encrypted:/data:slave,ro
-    - /mnt/password:/data/encfs-password:slave,ro
     - sshd_host_keys:/etc/ssh/host_keys
     - ~/.ssh/authorized_keys:/home/alice/.ssh/authorized_keys:ro
     ports: ['127.0.0.1:2022:22']
