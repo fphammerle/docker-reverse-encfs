@@ -1,0 +1,44 @@
+version: '2'
+
+volumes:
+  plain_data:
+  encfs_password:
+  sshd_host_keys:
+
+services:
+  encfs:
+    image: fphammerle/reverse-encfs:0.1-encfs1.9.5
+    volumes:
+    - plain_data:/plain/data:ro
+    - encfs_password:/secret
+    # TODO replace host path with named volume
+    - /mnt/encrypted:/encrypted:shared
+    networks: []
+    devices: [/dev/fuse]
+    cap_add: [SYS_ADMIN]
+    security_opt: ['apparmor:unconfined']
+  encfs_pwd_rgpgfs:
+    image: fphammerle/rgpgfs:0.1-amd64
+    environment:
+      RECIPIENT: 1234567890ABCDEF1234567890ABCDEF12345678
+    volumes:
+    - encfs_password:/plain:ro
+    # TODO replace host path with named volume
+    - /mnt/password:/encrypted:shared
+    devices: [/dev/fuse]
+    cap_add: [SYS_ADMIN]
+    security_opt: ['apparmor:unconfined']
+    tty: true
+  rsync_sshd:
+    image: fphammerle/rsync-sshd:0.1-amd64
+    environment:
+      USERS: alice
+    volumes:
+    - /mnt/encrypted:/data:slave,ro
+    - /mnt/password:/data/encfs-password:slave,ro
+    - sshd_host_keys:/etc/ssh/host_keys
+    - ~/.ssh/authorized_keys:/home/alice/.ssh/authorized_keys:ro
+    ports: ['127.0.0.1:2022:22']
+    # rsync -av --rsh='ssh -p 2022' alice@localhost:/ encrypted
+
+# https://docs.docker.com/compose/compose-file/compose-file-v2/

@@ -35,3 +35,6 @@ due to https://github.com/moby/moby/issues/36472 .
 ## Serve encrypted data via rsync ssh server
 
 See [examples/rsync-sshd](examples/rsync-sshd/docker-compose.yml)
+
+Grant rsync access to a gpg-encrypted view of the encfs password:
+[examples/rsync-sshd-incl-gpg-enc-pwd](examples/rsync-sshd-incl-gpg-enc-pwd/docker-compose.yml)
