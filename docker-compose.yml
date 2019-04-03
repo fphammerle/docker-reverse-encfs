@@ -11,6 +11,7 @@ services:
     volumes:
     - plain_data:/plain/data:ro
     - encfs_password:/secret
+    - /mnt/encrypted:/encrypted:shared
     networks: []
     devices: [/dev/fuse]
     cap_add: [SYS_ADMIN]
