@@ -26,6 +26,8 @@ function copy_config {
 copy_config &
 set -x
 mkdir -p "$ENCFS_MOUNT_POINT"
+trap 'fusermount -u -z "$ENCFS_MOUNT_POINT"' SIGTERM
 encfs -f -o allow_other --reverse --standard \
     --extpass="cat \"$ENCFS_PASSWORD_PATH\"" \
-    "$ENCFS_SOURCE_DIR" "$ENCFS_MOUNT_POINT"
+    "$ENCFS_SOURCE_DIR" "$ENCFS_MOUNT_POINT" &
+wait $!

@@ -7,7 +7,7 @@ volumes:
 
 services:
   encfs:
-    image: fphammerle/reverse-encfs:0.1-encfs1.9.5
+    image: fphammerle/reverse-encfs:0.1.1-encfs1.9.5-amd64
     volumes:
     - plain_data:/plain/data:ro
     - encfs_password:/secret

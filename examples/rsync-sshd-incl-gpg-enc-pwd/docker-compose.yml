@@ -7,7 +7,7 @@ volumes:
 
 services:
   encfs:
-    image: fphammerle/reverse-encfs:0.1-encfs1.9.5
+    image: fphammerle/reverse-encfs:0.1.1-encfs1.9.5-amd64
     volumes:
     - plain_data:/plain/data:ro
     - encfs_password:/secret
@@ -18,7 +18,7 @@ services:
     cap_add: [SYS_ADMIN]
     security_opt: ['apparmor:unconfined']
   encfs_pwd_rgpgfs:
-    image: fphammerle/rgpgfs:0.1-amd64
+    image: fphammerle/rgpgfs:0.1.1-amd64
     environment:
       RECIPIENT: 1234567890ABCDEF1234567890ABCDEF12345678
     volumes:
