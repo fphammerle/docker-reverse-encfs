@@ -11,7 +11,12 @@ services:
     volumes:
     - plain_data:/plain/data:ro
     - encfs_password:/secret
-    # TODO replace host path with named volume
+    # Currently docker does not allow changing
+    # the mount propagation setting for named volumes.
+    # https://github.com/moby/moby/pull/17034#issuecomment-163361073
+    # https://github.com/moby/moby/pull/17034/files#diff-6896c3d2994ef80758bb7e38c07eb76bR103
+    # https://github.com/moby/moby/blob/675144ff8d251a97322859a78f28ed4f988d3a74/volume/volume_unix.go#L100
+    # So we bind mount a host dir instead.
     - /mnt/encrypted:/encrypted:shared
     networks: []
     devices: [/dev/fuse]

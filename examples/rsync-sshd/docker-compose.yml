@@ -11,12 +11,11 @@ services:
     volumes:
     - plain_data:/plain/data:ro
     - encfs_password:/secret
-    # TODO replace host path with named volume
-    # [...] the local driver accepts mount options as a comma-separated list in the o parameter.
-    # https://docs.docker.com/storage/volumes/
-    #
-    # update 2019-03-27: adding 'shared' to volumes.*.driver_opts.o did not suffice.
-    # got inspired by https://github.com/docker/compose/issues/2957#issuecomment-403175803
+    # Currently docker does not allow changing
+    # the mount propagation setting for named volumes.
+    # https://github.com/moby/moby/pull/17034#issuecomment-163361073
+    # https://github.com/moby/moby/pull/17034/files#diff-6896c3d2994ef80758bb7e38c07eb76bR103
+    # So we bind mount a host dir instead.
     - /mnt/encrypted:/encrypted:shared
     networks: []
     devices: [/dev/fuse]
