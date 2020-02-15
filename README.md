@@ -24,7 +24,7 @@ A random password will be generated and stored in `/secret/password`.
 
 Set the env var `$ENCFS_PASSWORD_LENGTH` to change its length.
 
-## Access encrypted data
+## Access Encrypted Data
 
 Add `-v /somewhere:/encrypted:shared` to mount the encrypted view of `/plain/*` into the host filesystem.
 
@@ -38,3 +38,15 @@ See [examples/rsync-sshd](examples/rsync-sshd/docker-compose.yml)
 
 Grant rsync access to a gpg-encrypted view of the encfs password:
 [examples/rsync-sshd-incl-gpg-enc-pwd](examples/rsync-sshd-incl-gpg-enc-pwd/docker-compose.yml)
+
+## Known Issues
+
+Mount fails with `EPERM / Operation not permitted`
+when enabling `--security-opt=no-new-privileges`.
+
+`fusermount` must run with `uid=0`.
+`no-new-privileges` makes the `setuid` bit ineffective:
+```sh
+$ stat -c '%A %U %G' /bin/fusermount
+-rwsr-xr-x root root
+```

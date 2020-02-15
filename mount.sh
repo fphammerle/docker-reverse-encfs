@@ -10,7 +10,7 @@ if [ ! -f "$ENCFS_PASSWORD_PATH" ]; then
     [ -f "$ENCFS_SOURCE_CONFIG_PATH" ] && (set -x; rm "$ENCFS_SOURCE_CONFIG_PATH")
 fi
 
-# cave: when $ENCFS6_CONFIG is set, encfs excepts the config to already exist
+# cave: when $ENCFS6_CONFIG is set, encfs expects the config to already exist
 # ERROR fatal: config file specified by environment does not exist: /target/config/encfs6.xml [FileUtils.cpp:246]
 # https://github.com/vgough/encfs/issues/497
 
