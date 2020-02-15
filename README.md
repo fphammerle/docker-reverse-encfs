@@ -32,7 +32,7 @@ You may need to disable user namespace remapping for containers
 (dockerd option `--userns-remap`)
 due to https://github.com/moby/moby/issues/36472 .
 
-## Serve encrypted data via rsync ssh server
+## Serve Encrypted Data via Rsync SSH Server
 
 See [examples/rsync-sshd](examples/rsync-sshd/docker-compose.yml)
 
